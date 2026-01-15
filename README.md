@@ -1,6 +1,6 @@
 # Wealth Tax Simulator
 
-An interactive web simulator showing how a minimum wealth tax would affect tax progressivity across multiple countries. Built with React and Vite.
+An interactive web simulator showing how a minimum wealth tax would affect tax progressivity and fiscal revenues across multiple countries. Built with React and Vite.
 
 **Live site:** [wealth-tax-simulator.vercel.app](https://wealth-tax-simulator.vercel.app)
 
@@ -13,6 +13,7 @@ tax-simulator/
 │   ├── components/             # Reusable UI components
 │   │   ├── Chart.jsx           # Simulator chart (current vs reform rates)
 │   │   ├── ComparisonSection.jsx   # Multi-country comparison chart
+│   │   ├── Footer.jsx          # Bottom bar
 │   │   ├── Navigation.jsx      # Top navigation bar
 │   │   ├── Parameters.jsx      # Tax rate and threshold sliders
 │   │   ├── ScrollToTop.jsx     # Scroll reset on page navigation
@@ -90,25 +91,21 @@ Open http://localhost:5173 in your browser. Changes auto-reload.
 
 ## Deployment
 
-The site is deployed on [Vercel](https://vercel.com).
+The site is deployed on [Vercel](https://vercel.com), connected to the GitHub repository. Every push to the `main` branch triggers a new deployment automatically.
 
-**First time setup:**
+**Workflow to update the site:**
 ```bash
-npm install -g vercel
-vercel login
+# After modifying files
+git add .
+git commit -m "Description of changes"
+git push
 ```
 
-**Deploy to production:**
-```bash
-vercel --prod
-```
+The site updates automatically within ~30 seconds.
 
-The production URL remains stable across deployments.
-
-## Data Sources
-
-See the [Papers page](https://wealth-tax-simulator.vercel.app/papers) for the full list of academic sources used for each country.
 
 ## Contact
 
-For questions about the methodology, contact the EU Tax Observatory.
+For questions about the website or methodology:
+
+**Léonard Mouillet** — le.mouillet@gmail.com
