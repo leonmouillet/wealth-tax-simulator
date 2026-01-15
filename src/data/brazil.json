@@ -1,0 +1,16 @@
+{
+  "country": "Brazil",
+  "currency": "$",
+  "dataYear": 2019,
+  "simulationYear": 2025,
+  "color": "#2a9d8f",
+  "groups": [
+    { "group": "Bottom 50%", "n": null, "avgIncome": null, "incomeThreshold": null, "totalRate": 0.4775, "indivRate": null, "incomeWealthRatio": null, "growthRate": 0.10 },
+    { "group": "Middle 40%", "n": null, "avgIncome": null, "incomeThreshold": null, "totalRate": 0.465, "indivRate": null, "incomeWealthRatio": null, "growthRate": 0.10 },
+    { "group": "Top 10%", "n": null, "avgIncome": null, "incomeThreshold": null, "totalRate": 0.465, "indivRate": null, "incomeWealthRatio": null, "growthRate": 0.10 },
+    { "group": "Top 1%", "n": 1342683, "avgIncome": 606869, "incomeThreshold": 374526, "totalRate": 0.30, "indivRate": 0.11, "incomeWealthRatio": 0.11, "growthRate": 0.10 },
+    { "group": "Top 0.1%", "n": 134265, "avgIncome": 2545637, "incomeThreshold": 1422293, "totalRate": 0.225, "indivRate": 0.04, "incomeWealthRatio": 0.11, "growthRate": 0.10 },
+    { "group": "Top 0.01%", "n": 14770, "avgIncome": 18127227, "incomeThreshold": 7003875, "totalRate": 0.22, "indivRate": 0.03, "incomeWealthRatio": 0.11, "growthRate": 0.10 },
+    { "group": "Billionaires", "n": 152, "avgIncome": 491618912, "incomeThreshold": 199694816, "totalRate": 0.20, "indivRate": 0.02, "incomeWealthRatio": 0.09, "growthRate": 0.10 }
+  ]
+}

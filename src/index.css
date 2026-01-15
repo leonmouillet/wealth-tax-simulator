@@ -1,0 +1,441 @@
+/* Reset & Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #fafafa;
+  color: #1a1a1a;
+  line-height: 1.6;
+}
+
+/* Layout */
+.app {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+/* Sections */
+.section {
+  margin-bottom: 5rem;
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+/* Typography */
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #111;
+}
+
+.section-intro {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 2rem;
+  max-width: 1000px;
+}
+
+/* Country Tabs */
+.country-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.country-tab {
+  padding: 0.625rem 1.25rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fff;
+  color: #333;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.country-tab:hover {
+  border-color: #ccc;
+  background: #f5f5f5;
+}
+
+.country-tab.active {
+  color: #fff;
+  border-color: transparent;
+}
+
+/* Controls row (parameters + revenue) */
+.controls-row {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Parameters */
+.parameters {
+  flex: 1;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.parameter {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.parameter:last-child {
+  margin-bottom: 0;
+}
+
+.parameter-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  min-width: 140px;
+}
+
+.parameter-slider {
+  flex: 1;
+  max-width: 200px;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #e0e0e0;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.parameter-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #333;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.parameter-value {
+  font-size: 1rem;
+  color: #555;
+  min-width: 70px;
+  text-align: right;
+}
+
+/* Chart container */
+.chart-container {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Results */
+.results-text {
+  font-size: 1.1rem;
+  color: #555;
+  margin-top: 1rem;
+}
+
+.results-text strong {
+  color: #111;
+  font-weight: 600;
+}
+
+/* Navigation */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: #fff;
+  border-bottom: 1px solid #e5e5e5;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-brand {
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: #111;
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nav-link {
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.nav-link:hover {
+  background: #f5f5f5;
+  color: #111;
+}
+
+.nav-link.active {
+  background: #111;
+  color: #fff;
+}
+
+/* Papers page */
+.papers-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e5e5e5;
+}
+
+.papers-table th {
+  text-align: left;
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #888;
+  border-bottom: 1px solid #e5e5e5;
+  background: #fafafa;
+}
+
+.papers-table td {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: top;
+}
+
+.papers-table tr:last-child td {
+  border-bottom: none;
+}
+
+.paper-country {
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap;
+  width: 180px;
+}
+
+.paper-link {
+  color: #333;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.paper-link:hover {
+  text-decoration: underline;
+}
+
+.paper-title {
+  display: block;
+  color: #888;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.paper-authors {
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 0.25rem;
+}
+
+.paper-title {
+  color: #555;
+  font-style: italic;
+}
+
+/* Methodology page */
+.methodology-content {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.methodology-content h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.methodology-content h2:first-child {
+  margin-top: 0;
+}
+
+.methodology-content h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+.methodology-content p {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.formula {
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 0.9rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.methodology-content code {
+  background: #f0f0f0;
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.methodology-content a {
+  color: #333;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.methodology-content a:hover {
+  color: #111;
+}
+
+/* Source links */
+.source-link {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: #888;
+  text-decoration: none;
+  text-align: right;
+  transition: color 0.15s ease;
+}
+
+.source-link:hover {
+  color: #333;
+}
+
+/* Download links */
+.download-link {
+  color: #333;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.download-link:hover {
+  color: #111;
+  text-decoration: underline;
+}
+
+/* Call-to-action button */
+.cta-button {
+  display: inline-block;
+  padding: 0.625rem 1.25rem;
+  background: #111;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.cta-button:hover {
+  background: #333;
+}
+
+/* Scroll offset for sticky nav */
+#simulator {
+  scroll-margin-top: 80px;
+}
+
+/* Chart header */
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+/* Controls row (parameters + revenue) */
+.controls-row {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Revenue box */
+.revenue-box {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 220px;
+}
+
+.revenue-label {
+  align-self: center;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.revenue-value {
+  align-self: center;
+  font-size: 1.5rem;
+  color: #555;
+}
+
+/* Chart title */
+.chart-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+/* Methodology list */
+.methodology-list {
+  margin: 1rem 0 1.5rem 1.5rem;
+  color: #333;
+}
+
+.methodology-list li {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.methodology-list li:last-child {
+  margin-bottom: 0;
+}
