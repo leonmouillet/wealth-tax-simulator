@@ -47,8 +47,9 @@ function Methodology() {
 
         <ul className="methodology-list">
           <li>
-            We assume a uniform income-to-wealth ratio within each income group: 9% for billionaires 
-            and 11% for millionaires. This allows computing wealth tax liabilities from income data.
+            We assume a uniform income-to-wealth ratio within each income group: 6% for billionaires, 
+            9% for the top 0.01%, 12% for the top 0.1% and 13% for the top 1%. 
+            This allows computing wealth tax liabilities from income data.
           </li>
           <li>
             Wealth is assumed to follow a Pareto distribution within each income group, 

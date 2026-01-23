@@ -8,9 +8,9 @@
     { "group": "Bottom 50%", "n": null, "avgIncome": null, "incomeThreshold": null, "totalRate": 0.42, "indivRate": null, "incomeWealthRatio": null, "growthRate": 0.07 },
     { "group": "Middle 40%", "n": null, "avgIncome": null, "incomeThreshold": null, "totalRate": 0.46, "indivRate": null, "incomeWealthRatio": null, "growthRate": 0.07 },
     { "group": "Top 10%", "n": null, "avgIncome": null, "incomeThreshold": null, "totalRate": 0.50, "indivRate": null, "incomeWealthRatio": null, "growthRate": 0.07 },
-    { "group": "Top 1%", "n": 456295, "avgIncome": 212339, "incomeThreshold": 147733, "totalRate": 0.43, "indivRate": 0.25, "incomeWealthRatio": 0.11, "growthRate": 0.07 },
-    { "group": "Top 0.1%", "n": 50699, "avgIncome": 618123, "incomeThreshold": 507543, "totalRate": 0.36, "indivRate": 0.15, "incomeWealthRatio": 0.11, "growthRate": 0.07 },
-    { "group": "Top 0.01%", "n": 5070, "avgIncome": 3902289, "incomeThreshold": 1509671, "totalRate": 0.27, "indivRate": 0.1125, "incomeWealthRatio": 0.11, "growthRate": 0.07 },
-    { "group": "Billionaires", "n": 51, "avgIncome": 253043960, "incomeThreshold": 71666422, "totalRate": 0.18, "indivRate": 0.075, "incomeWealthRatio": 0.09, "growthRate": 0.07 }
+    { "group": "Top 1%", "n": 456295, "avgIncome": 212339, "incomeThreshold": 147733, "totalRate": 0.43, "indivRate": 0.25, "incomeWealthRatio": 0.13, "growthRate": 0.07 },
+    { "group": "Top 0.1%", "n": 50699, "avgIncome": 618123, "incomeThreshold": 507543, "totalRate": 0.36, "indivRate": 0.15, "incomeWealthRatio": 0.12, "growthRate": 0.07 },
+    { "group": "Top 0.01%", "n": 5070, "avgIncome": 3902289, "incomeThreshold": 1509671, "totalRate": 0.27, "indivRate": 0.113, "incomeWealthRatio": 0.09, "growthRate": 0.07 },
+    { "group": "Billionaires", "n": 51, "avgIncome": 253043960, "incomeThreshold": 71666422, "totalRate": 0.18, "indivRate": 0.075, "incomeWealthRatio": 0.06, "growthRate": 0.07 }
   ]
 }
