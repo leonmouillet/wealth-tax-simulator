@@ -48,7 +48,8 @@ function Papers() {
     <section className="section">
       <h1>Research Papers</h1>
       <p className="section-intro">
-        The data used in this simulator comes from the following academic studies on tax progressivity.
+      The data used in the simulator comes from the following academic studies on income inequality and tax progressivity.
+      New studies will soon be carried out on other countries, and will be integrated into the simulator. 
       </p>
 
       <table className="papers-table">

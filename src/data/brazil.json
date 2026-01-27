@@ -5,12 +5,12 @@
   "simulationYear": 2025,
   "color": "#2a9d8f",
   "groups": [
-    { "group": "Bottom 50%", "n": null, "avgIncome": null, "incomeThreshold": null, "totalRate": 0.477, "indivRate": null, "incomeWealthRatio": null, "growthRate": 0.10 },
-    { "group": "Middle 40%", "n": null, "avgIncome": null, "incomeThreshold": null, "totalRate": 0.467, "indivRate": null, "incomeWealthRatio": null, "growthRate": 0.10 },
-    { "group": "Top 10%", "n": null, "avgIncome": null, "incomeThreshold": null, "totalRate": 0.467, "indivRate": null, "incomeWealthRatio": null, "growthRate": 0.10 },
-    { "group": "Top 1%", "n": 1342683, "avgIncome": 150588, "incomeThreshold": 92934, "totalRate": 0.30, "indivRate": 0.095, "incomeWealthRatio": 0.13, "growthRate": 0.10 },
-    { "group": "Top 0.1%", "n": 134265, "avgIncome": 631672, "incomeThreshold": 352926, "totalRate": 0.224, "indivRate": 0.049, "incomeWealthRatio": 0.12, "growthRate": 0.10 },
-    { "group": "Top 0.01%", "n": 14770, "avgIncome": 4498071, "incomeThreshold": 1737934, "totalRate": 0.215, "indivRate": 0.034, "incomeWealthRatio": 0.09, "growthRate": 0.10 },
-    { "group": "Billionaires", "n": 152, "avgIncome": 121989804, "incomeThreshold": 49552064, "totalRate": 0.197, "indivRate": 0.02, "incomeWealthRatio": 0.06, "growthRate": 0.10 }
+    { "group": "Bottom 50%", "n": null, "avgIncome": null, "incomeThreshold": null, "totalRate": 0.477, "indivRate": null, "incomeWealthRatio": null, "growthRate": null },
+    { "group": "Middle 40%", "n": null, "avgIncome": null, "incomeThreshold": null, "totalRate": 0.467, "indivRate": null, "incomeWealthRatio": null, "growthRate": null },
+    { "group": "Top 10%", "n": null, "avgIncome": null, "incomeThreshold": null, "totalRate": 0.467, "indivRate": null, "incomeWealthRatio": null, "growthRate": null },
+    { "group": "Top 1%", "n": 1342683, "avgIncome": 150588, "incomeThreshold": 92934, "totalRate": 0.30, "indivRate": 0.095, "incomeWealthRatio": 0.13, "growthRate": 0.133 },
+    { "group": "Top 0.1%", "n": 134265, "avgIncome": 631672, "incomeThreshold": 352926, "totalRate": 0.224, "indivRate": 0.049, "incomeWealthRatio": 0.12, "growthRate": 0.075 },
+    { "group": "Top 0.01%", "n": 14770, "avgIncome": 4498071, "incomeThreshold": 1737934, "totalRate": 0.215, "indivRate": 0.034, "incomeWealthRatio": 0.09, "growthRate": 0.053 },
+    { "group": "Billionaires", "n": 152, "avgIncome": 121989804, "incomeThreshold": 49552064, "totalRate": 0.197, "indivRate": 0.02, "incomeWealthRatio": 0.06, "growthRate": 0.054 }
   ]
 }

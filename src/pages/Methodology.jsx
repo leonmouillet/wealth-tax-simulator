@@ -42,7 +42,7 @@ function Methodology() {
         <h2>Simulation Assumptions</h2>
 
         <p>
-          For computing effective tax rates and extra fiscal revenues under the minimum wealth tax, we make the following assumptions:
+          For computing effective tax rates and extra fiscal revenues under the minimum wealth tax, we make the two following assumptions:
         </p>
 
         <ul className="methodology-list">
@@ -54,10 +54,6 @@ function Methodology() {
           <li>
             Wealth is assumed to follow a Pareto distribution within each income group, 
             where the Pareto coefficient is estimated from the income threshold and average income of the group.
-          </li>
-          <li>
-            We assume 7% annual nominal income growth (10% for Brazil) to project income values from 
-            the data year to 2025.
           </li>
         </ul>
         
