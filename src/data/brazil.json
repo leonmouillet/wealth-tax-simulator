@@ -3,6 +3,7 @@
   "currency": "$",
   "dataYear": 2019,
   "simulationYear": 2025,
+  "unitSize": 1.0,
   "color": "#2a9d8f",
   "groups": [
     { "group": "Bottom 50%", "n": null, "avgIncome": null, "incomeThreshold": null, "totalRate": 0.477, "indivRate": null, "incomeWealthRatio": null, "growthRate": null },

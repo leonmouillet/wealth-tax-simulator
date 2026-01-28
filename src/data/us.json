@@ -3,14 +3,15 @@
   "currency": "$",
   "dataYear": 2018,
   "simulationYear": 2025,
+  "unitSize": 1.8,
   "color": "#e63946",
   "groups": [
     { "group": "Bottom 50%", "n": null, "avgIncome": null, "incomeThreshold": null, "totalRate": 0.244, "indivRate": null, "incomeWealthRatio": null, "growthRate": null },
     { "group": "Middle 40%", "n": null, "avgIncome": null, "incomeThreshold": null, "totalRate": 0.272, "indivRate": null, "incomeWealthRatio": null, "growthRate": null },
     { "group": "Top 10%", "n": null, "avgIncome": null, "incomeThreshold": null, "totalRate": 0.282, "indivRate": null, "incomeWealthRatio": null, "growthRate": null },
-    { "group": "Top 1%", "n": 1950271, "avgIncome": 936385, "incomeThreshold": 539000, "totalRate": 0.289, "indivRate": 0.197, "incomeWealthRatio": 0.13, "growthRate": 0.039 },
-    { "group": "Top 0.1%", "n": 195016, "avgIncome": 4526004, "incomeThreshold": 2430000, "totalRate": 0.331, "indivRate": 0.226, "incomeWealthRatio": 0.12, "growthRate": 0.046 },
-    { "group": "Top 0.01%", "n": 21163, "avgIncome": 31593939, "incomeThreshold": 12800000, "totalRate": 0.304, "indivRate": 0.187, "incomeWealthRatio": 0.09, "growthRate": 0.058 },
+    { "group": "Top 1%", "n": 1083484, "avgIncome": 1685493, "incomeThreshold": 970200, "totalRate": 0.289, "indivRate": 0.197, "incomeWealthRatio": 0.13, "growthRate": 0.039 },
+    { "group": "Top 0.1%", "n": 108342, "avgIncome": 8146807, "incomeThreshold": 4374000, "totalRate": 0.331, "indivRate": 0.226, "incomeWealthRatio": 0.12, "growthRate": 0.046 },
+    { "group": "Top 0.01%", "n": 11757, "avgIncome": 56869090, "incomeThreshold": 23040000, "totalRate": 0.304, "indivRate": 0.187, "incomeWealthRatio": 0.09, "growthRate": 0.058 },
     { "group": "Billionaires", "n": 367, "avgIncome": 452300000, "incomeThreshold": 131482558, "totalRate": 0.238, "indivRate": 0.096, "incomeWealthRatio": 0.06, "growthRate": 0.064 }
   ]
 }

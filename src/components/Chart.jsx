@@ -13,6 +13,8 @@ function Chart({ data, color = "#e63946" }) {
   const yTicks = Array.from({ length: yMax / 10 + 1 }, (_, i) => i * 10)
 
   return (
+    <div>
+    <h3 className="chart-title">Effect of the wealth tax on tax progressivity</h3>
     <ResponsiveContainer width="100%" height={400}>
       <LineChart data={chartData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
         <CartesianGrid strokeDasharray="3 3" />
@@ -38,6 +40,7 @@ function Chart({ data, color = "#e63946" }) {
         <Line type="monotone" dataKey="reformRate" name="Rate under reform" stroke={color} strokeWidth={2} />
       </LineChart>
     </ResponsiveContainer>
+    </div>
   )
 }
 

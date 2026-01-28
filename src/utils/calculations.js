@@ -32,6 +32,23 @@ export function computeShareExposed(group, reformThreshold, yearsElapsed) {
 }
 
 /**
+ * Compute number of individuals affected by the tax
+ */
+export function computeIndividualsAffected(group, reformThreshold, yearsElapsed, unitSize = 1.0) {
+  const wealthThreshold = computeWealthThreshold(group, yearsElapsed);
+  const pareto = computeParetoCoef(group);
+  const { n } = group;
+
+  if (!wealthThreshold || !pareto || !n) return 0;
+  
+  if (reformThreshold <= wealthThreshold) return n * unitSize;
+
+  const alpha = pareto / (pareto - 1);
+  const unitsAffected = n * Math.pow(wealthThreshold / reformThreshold, alpha);
+  return unitsAffected * unitSize;
+}
+
+/**
  * Compute the tax rate under reform for a group
  */
 export function computeReformRate(group, taxRate, reformThreshold, yearsElapsed) {
@@ -83,4 +100,16 @@ export function computeTotalRevenue(countryData, taxRate, reformThreshold) {
   return countryData.groups.reduce((sum, group) => {
     return sum + computeExtraRevenue(group, taxRate, reformThreshold, yearsElapsed)
   }, 0)
+}
+
+/**
+ * Compute total number of individuals affected by the tax
+ */
+export function computeTotalIndividuals(countryData, reformThreshold) {
+  const yearsElapsed = countryData.simulationYear - countryData.dataYear;
+  const unitSize = countryData.unitSize || 1.0;
+
+  return countryData.groups.reduce((sum, group) => {
+    return sum + computeIndividualsAffected(group, reformThreshold, yearsElapsed, unitSize);
+  }, 0);
 }
