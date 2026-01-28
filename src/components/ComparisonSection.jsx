@@ -15,9 +15,8 @@ function ComparisonSection({ countries }) {
   })
 
   return (
-    <div style={{ width: "100%" }}>
     <ResponsiveContainer width="100%" height={450}>
-      <LineChart data={chartData} margin={{right: 40}}>
+      <LineChart data={chartData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis 
           dataKey="x" 
@@ -25,10 +24,11 @@ function ComparisonSection({ countries }) {
           domain={[0, 100]} 
           ticks={X_POSITIONS}
           tickFormatter={(x) => chartData.find(d => d.x === x)?.group || ''}
-          textAnchor="middle"
-          height={50}
+          textAnchor="end"
+          angle={-45}
+          height={80}
           interval={0}
-          tick={{ fontSize: 14, dy: 10 }}
+          tick={{ fontSize: 12, dy: 3}}
         />
         <YAxis domain={[0, 60]} tickFormatter={(v) => `${v}%`} />
         <Tooltip 
@@ -43,13 +43,11 @@ function ComparisonSection({ countries }) {
             dataKey={country.country}
             stroke={country.color}
             strokeWidth={2}
-            dot={{ r: 4 }}
+            dot={{ r: 3 }}
           />
         ))}
-
       </LineChart>
     </ResponsiveContainer>
-    </div>
   )
 }
 
