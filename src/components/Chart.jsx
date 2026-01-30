@@ -1,8 +1,18 @@
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { useState, useEffect } from 'react'
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, Tooltip, ResponsiveContainer } from 'recharts'
 
 const X_POSITIONS = [0, 40, 60, 70, 80, 90, 100]
 
 function Chart({ data, color = "#e63946" }) {
+
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
   const chartData = data.map((d, i) => ({
     ...d,
     x: X_POSITIONS[i],
@@ -31,13 +41,18 @@ function Chart({ data, color = "#e63946" }) {
           tick={{ fontSize: 12, dy: 3 }}
         />
         <YAxis domain={[0, yMax]} tickFormatter={(v) => `${v}%`} ticks={yTicks} interval={0} />
-        <Tooltip 
-          formatter={(v) => `${v.toFixed(1)}%`}
-          labelFormatter={(x) => chartData.find(d => d.x === x)?.group || ''}
-        />
+        {!isMobile && (
+          <Tooltip 
+            formatter={(v) => `${v.toFixed(1)}%`}
+            labelFormatter={(x) => chartData.find(d => d.x === x)?.group || ''}
+            contentStyle={{ fontSize: '13px', padding: '6px 10px' }}
+            itemStyle={{ fontSize: '13px', padding: '2px 0' }}
+            labelStyle={{ fontSize: '11px', fontWeight: 600, marginBottom: '4px' }}
+          />
+        )}
         <Legend />
-        <Line type="monotone" dataKey="currentRate" name="Current rate" stroke="#888" strokeWidth={2} />
-        <Line type="monotone" dataKey="reformRate" name="Rate under reform" stroke={color} strokeWidth={2} />
+        <Line type="monotone" dataKey="currentRate" name="Current rate" stroke="#888" strokeWidth={2} activeDot={false} />
+        <Line type="monotone" dataKey="reformRate" name="Rate under reform" stroke={color} strokeWidth={2} activeDot={false} />
       </LineChart>
     </ResponsiveContainer>
     </div>
