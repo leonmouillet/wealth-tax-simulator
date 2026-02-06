@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
 
-import franceData from '../data/france.json'
-import usData from '../data/us.json'
-import netherlandsData from '../data/netherlands.json'
-import brazilData from '../data/brazil.json'
-import italyData from '../data/italy.json'
+import franceData from '../data/fra.json'
+import usData from '../data/usa.json'
+import netherlandsData from '../data/ndl.json'
+import brazilData from '../data/bra.json'
+import italyData from '../data/ita.json'
 
 import ComparisonSection from '../components/ComparisonSection'
 import SimulatorSection from '../components/SimulatorSection'
