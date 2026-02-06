@@ -4,48 +4,18 @@ An interactive web simulator showing how a minimum wealth tax would affect tax p
 
 **Live site:** [wealth-tax-simulator.vercel.app](https://wealth-tax-simulator.vercel.app)
 
-## Project Structure
-```
-tax-simulator/
-├── public/                     # Static files served as-is
-│   └── wealth-tax-simulation.xlsx  # Downloadable Excel version of the simulator
-├── src/
-│   ├── components/             # Reusable UI components
-│   │   ├── Chart.jsx           # Simulator chart (current vs reform rates)
-│   │   ├── ComparisonSection.jsx   # Multi-country comparison chart
-│   │   ├── Footer.jsx          # Bottom bar
-│   │   ├── Navigation.jsx      # Top navigation bar
-│   │   ├── Parameters.jsx      # Tax rate and threshold sliders
-│   │   ├── ScrollToTop.jsx     # Scroll reset on page navigation
-│   │   └── SimulatorSection.jsx    # Complete simulator (tabs + params + chart)
-│   ├── data/                   # Country data (JSON)
-│   │   ├── france.json
-│   │   ├── us.json
-│   │   ├── netherlands.json
-│   │   ├── brazil.json
-│   │   └── italy.json
-│   ├── pages/                  # Page components
-│   │   ├── Home.jsx            # Main page (comparison + simulator)
-│   │   ├── Papers.jsx          # Research papers list
-│   │   └── Methodology.jsx     # Methodology explanation
-│   ├── utils/
-│   │   └── calculations.js     # Tax computation functions
-│   ├── App.jsx                 # Root component (routing)
-│   ├── main.jsx                # React entry point
-│   └── index.css               # Global styles
-├── index.html                  # HTML template
-├── package.json                # Dependencies and scripts
-└── vite.config.js              # Vite configuration
-```
-
 ## Key Files
 
 | File | Purpose |
 |------|---------|
 | `src/data/*.json` | Input data for each country |
 | `src/utils/calculations.js` | All simulation formulas|
+| `src/components/Chart.jsx` | Interactive chart component with X-axis scaling modes |
+| `src/components/SimulatorSection.jsx` | Simulator interface with tax parameters |
+| `src/components/ComparisonSection.jsx` | Cross-country comparison chart |
 | `src/pages/Home.jsx` | Assembles the main page sections |
 | `src/index.css` | All CSS styles in one place |
+| `public/wealth-tax-simulator.xlsx` | Downloadable Excel version of the simulator |
 
 ## Adding a New Country
 
@@ -67,12 +37,15 @@ All calculations are in `src/utils/calculations.js`:
 | Function | Purpose |
 |----------|---------|
 | `computeWealthThreshold()` | Converts income threshold to wealth threshold |
-| `computeParetoCoef()` | Estimates Pareto coefficient from income data |
+| `computeAlpha()` | Calculates the Pareto coefficient (alpha) |
+| `computeCorrectedAlpha()` | Calculates corrected alpha accounting for next group |
 | `computeShareExposed()` | Fraction of wealth above tax threshold |
+| `computeIndividualsAffected()` | Number of individuals affected in a group |
 | `computeReformRate()` | New effective tax rate under the reform |
 | `computeExtraRevenue()` | Additional fiscal revenues per group |
 | `computeChartData()` | Prepares data for the chart |
 | `computeTotalRevenue()` | Sums revenues across all groups |
+| `computeTotalIndividuals()` | Total number of individuals affected by the tax |
 
 To change the simulation logic, edit these functions.
 
@@ -102,10 +75,3 @@ git push
 ```
 
 The site updates automatically within ~30 seconds.
-
-
-## Contact
-
-For questions about the website or methodology:
-
-**Léonard Mouillet** — le.mouillet@gmail.com

@@ -1,4 +1,7 @@
-/* Reset & Base */
+/* ===========================================
+   RESET & BASE STYLES
+   =========================================== */
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -12,14 +15,16 @@ body {
   line-height: 1.6;
 }
 
-/* Layout */
+/* ===========================================
+   LAYOUT
+   =========================================== */
+
 .app {
   max-width: 1000px;
   margin: 0 auto;
   padding: 3rem 1.5rem;
 }
 
-/* Sections */
 .section {
   margin-bottom: 5rem;
 }
@@ -28,7 +33,72 @@ body {
   margin-bottom: 0;
 }
 
-/* Typography */
+/* Scroll offset for sticky nav */
+#simulator {
+  scroll-margin-top: 80px;
+}
+
+/* ===========================================
+   NAVIGATION
+   =========================================== */
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: #fff;
+  border-bottom: 1px solid #e5e5e5;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-logo {
+  height: 50px;
+  width: auto;
+}
+
+.nav-brand {
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: #111;
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nav-link {
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.nav-link:hover {
+  background: #f5f5f5;
+  color: #111;
+}
+
+.nav-link.active {
+  background: #111;
+  color: #fff;
+}
+
+/* ===========================================
+   TYPOGRAPHY
+   =========================================== */
+
 h1 {
   font-size: 2rem;
   font-weight: 700;
@@ -43,7 +113,10 @@ h1 {
   max-width: 1000px;
 }
 
-/* Country Tabs */
+/* ===========================================
+   COUNTRY TABS
+   =========================================== */
+
 .country-tabs {
   display: flex;
   gap: 0.5rem;
@@ -73,14 +146,17 @@ h1 {
   border-color: transparent;
 }
 
-/* Controls row (parameters + revenue) */
+/* ===========================================
+   CONTROLS & PARAMETERS
+   =========================================== */
+
 .controls-row {
   display: flex;
   gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
-/* Parameters */
+/* Parameters box */
 .parameters {
   flex: 1;
   background: #fff;
@@ -139,7 +215,37 @@ h1 {
   text-align: right;
 }
 
-/* Chart container */
+/* Number box (individuals affected) */
+.number-box {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 260px;
+}
+
+.number-label {
+  align-self: center;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.number-value {
+  align-self: center;
+  font-size: 1.5rem;
+  color: #555;
+}
+
+/* ===========================================
+   CHART
+   =========================================== */
+
 .chart-container {
   background: #fff;
   border: 1px solid #e5e5e5;
@@ -148,237 +254,6 @@ h1 {
   margin-bottom: 1.5rem;
 }
 
-/* Results */
-.results-text {
-  font-size: 1.1rem;
-  color: #555;
-  margin-top: 1rem;
-}
-
-.results-text strong {
-  color: #111;
-  font-weight: 600;
-}
-
-/* Navigation */
-.nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background: #fff;
-  border-bottom: 1px solid #e5e5e5;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.nav-brand {
-  font-weight: 700;
-  font-size: 1.125rem;
-  color: #111;
-}
-
-.nav-links {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.nav-link {
-  padding: 0.5rem 1rem;
-  text-decoration: none;
-  color: #555;
-  font-weight: 500;
-  border-radius: 6px;
-  transition: all 0.15s ease;
-}
-
-.nav-link:hover {
-  background: #f5f5f5;
-  color: #111;
-}
-
-.nav-link.active {
-  background: #111;
-  color: #fff;
-}
-
-/* Papers page */
-.papers-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #fff;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid #e5e5e5;
-}
-
-.papers-table th {
-  text-align: left;
-  padding: 1rem 1.5rem;
-  font-weight: 600;
-  font-size: 0.875rem;
-  color: #888;
-  border-bottom: 1px solid #e5e5e5;
-  background: #fafafa;
-}
-
-.papers-table td {
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid #f0f0f0;
-  vertical-align: top;
-}
-
-.papers-table tr:last-child td {
-  border-bottom: none;
-}
-
-.paper-country {
-  font-weight: 500;
-  color: #333;
-  white-space: nowrap;
-  width: 180px;
-}
-
-.paper-link {
-  color: #333;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.paper-link:hover {
-  text-decoration: underline;
-}
-
-.paper-title {
-  display: block;
-  color: #888;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
-}
-
-.paper-authors {
-  font-weight: 600;
-  color: #111;
-  margin-bottom: 0.25rem;
-}
-
-.paper-title {
-  color: #555;
-  font-style: italic;
-}
-
-/* Methodology page */
-.methodology-content {
-  background: #fff;
-  border: 1px solid #e5e5e5;
-  border-radius: 12px;
-  padding: 2rem;
-}
-
-.methodology-content h2 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
-}
-
-.methodology-content h2:first-child {
-  margin-top: 0;
-}
-
-.methodology-content h3 {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
-  color: #555;
-}
-
-.methodology-content p {
-  margin-bottom: 1rem;
-  color: #333;
-}
-
-.formula {
-  background: #f5f5f5;
-  padding: 1rem;
-  border-radius: 8px;
-  font-family: monospace;
-  font-size: 0.9rem;
-  overflow-x: auto;
-  margin: 1rem 0;
-}
-
-.methodology-content code {
-  background: #f0f0f0;
-  padding: 0.125rem 0.375rem;
-  border-radius: 4px;
-  font-size: 0.875rem;
-}
-
-.methodology-content a {
-  color: #333;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.methodology-content a:hover {
-  color: #111;
-}
-
-/* Source links */
-.source-link {
-  display: block;
-  margin-top: 0.75rem;
-  font-size: 0.875rem;
-  color: #888;
-  text-decoration: none;
-  text-align: right;
-  transition: color 0.15s ease;
-}
-
-.source-link:hover {
-  color: #333;
-}
-
-/* Download links */
-.download-link {
-  color: #333;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.download-link:hover {
-  color: #111;
-  text-decoration: underline;
-}
-
-/* Call-to-action button */
-.cta-button {
-  display: inline-block;
-  padding: 0.625rem 1.25rem;
-  background: #111;
-  color: #fff;
-  font-family: inherit;
-  font-size: 0.875rem;
-  font-weight: 500;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.15s ease;
-}
-
-.cta-button:hover {
-  background: #333;
-}
-
-/* Scroll offset for sticky nav */
-#simulator {
-  scroll-margin-top: 80px;
-}
-
-/* Chart header */
 .chart-header {
   display: flex;
   justify-content: space-between;
@@ -386,14 +261,85 @@ h1 {
   margin-bottom: 1rem;
 }
 
-/* Controls row (parameters + revenue) */
-.controls-row {
-  display: flex;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+.chart-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
 }
 
-/* Revenue box */
+.chart-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  margin-left: 10px;
+  gap: 15px;
+}
+
+/* X-axis scale selector */
+.scale-mode-selector {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.scale-label {
+  font-size: 15px;
+  color: #666;
+  font-weight: 400;
+}
+
+.scale-buttons {
+  display: flex;
+  gap: 4px;
+  background: #f5f5f5;
+  padding: 2px;
+  border-radius: 6px;
+}
+
+.scale-button {
+  padding: 6px 6px;
+  font-size: 12px;
+  border: none;
+  background: transparent;
+  color: #666;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all 0.2s ease;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.scale-button:hover {
+  background: #e8e8e8;
+  color: #333;
+}
+
+.scale-button.active {
+  background: white;
+  color: #1d3557;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Remove focus outlines on charts */
+.recharts-wrapper,
+.recharts-wrapper *,
+.recharts-surface,
+.recharts-surface *,
+.chart-container *:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.recharts-wrapper {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ===========================================
+   REVENUE BOX
+   =========================================== */
+
 .revenue-box {
   background: #fff;
   border: 1px solid #e5e5e5;
@@ -442,163 +388,13 @@ h1 {
 
 .revenue-value-small {
   align-self: center;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: #555;
 }
 
-/* Number box */
-.number-box {
-  background: #fff;
-  border: 1px solid #e5e5e5;
-  border-radius: 12px;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 260px;
-  align-self: center;
-}
-
-.number-label {
-  align-self: center;
-  text-align: center;
-  font-size: 1rem;
-  font-weight: 400;
-  color: #555;
-  margin-bottom: 0.5rem;
-}
-
-.number-value {
-  align-self: center;
-  font-size: 1.5rem;
-  color: #555;
-}
-
-/* Chart title */
-.chart-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 1rem;
-}
-
-/* Methodology list */
-.methodology-list {
-  margin: 1rem 0 1.5rem 1.5rem;
-  color: #333;
-}
-
-.methodology-list li {
-  margin-bottom: 1rem;
-  line-height: 1.6;
-}
-
-.methodology-list li:last-child {
-  margin-bottom: 0;
-}
-
-/* Navigation with logo */
-.nav-left {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.nav-logo {
-  height: 50px;
-  width: auto;
-}
-
-/* Footer */
-.footer {
-  margin-top: 4rem;
-  padding: 2rem;
-  text-align: center;
-  border-top: 1px solid #e5e5e5;
-  background: #fafafa;
-}
-
-.footer p {
-  font-size: 0.875rem;
-  color: #666;
-}
-
-.footer a {
-  color: #333;
-  font-weight: 500;
-  text-decoration: none;
-}
-
-.footer a:hover {
-  text-decoration: underline;
-}
-
-/* Remove all focus outlines on charts */
-.recharts-wrapper,
-.recharts-wrapper *,
-.recharts-surface,
-.recharts-surface *,
-.chart-container *:focus {
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-.recharts-wrapper {
-  -webkit-tap-highlight-color: transparent;
-}
-
-.chart-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-  margin-left: 10px;
-  gap: 15px;
-}
-
-.scale-mode-selector {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.scale-label {
-  font-size: 15px;
-  color: #666;
-  font-weight: 400;
-}
-
-.scale-buttons {
-  display: flex;
-  gap: 4px;
-  background: #f5f5f5;
-  padding: 2px;
-  border-radius: 6px;
-}
-
-.scale-button {
-  padding: 5px 10px;
-  font-size: 12px;
-  border: none;
-  background: transparent;
-  color: #666;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: all 0.2s ease;
-  font-weight: 400;
-  white-space: nowrap;
-}
-
-.scale-button:hover {
-  background: #e8e8e8;
-  color: #333;
-}
-
-.scale-button.active {
-  background: white;
-  color: #1d3557;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
+/* ===========================================
+   TOOLTIPS
+   =========================================== */
 
 .mode-tooltip {
   background: rgba(0, 0, 0, 0.5);
@@ -624,7 +420,223 @@ h1 {
 }
 
 /* ===========================================
-   RESPONSIVE MOBILE
+   LINKS & BUTTONS
+   =========================================== */
+
+.source-link {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: #888;
+  text-decoration: none;
+  text-align: right;
+  transition: color 0.15s ease;
+}
+
+.source-link:hover {
+  color: #333;
+}
+
+.download-link {
+  color: #333;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.download-link:hover {
+  color: #111;
+  text-decoration: underline;
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 0.6rem 0.6rem;
+  background: #111;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  min-width: 150px;
+  margin-left: 0.6rem;
+}
+
+.cta-button:hover {
+  background: #333;
+}
+
+/* ===========================================
+   METHODOLOGY PAGE
+   =========================================== */
+
+.methodology-content {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.methodology-content h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.methodology-content h2:first-child {
+  margin-top: 0;
+}
+
+.methodology-content h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+.methodology-content p {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.methodology-content a {
+  color: #333;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.methodology-content a:hover {
+  color: #111;
+}
+
+.methodology-content code {
+  background: #f0f0f0;
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.methodology-list {
+  margin: 1rem 0 1.5rem 1.5rem;
+  color: #333;
+}
+
+.methodology-list li {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.methodology-list li:last-child {
+  margin-bottom: 0;
+}
+
+.formula {
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 0.9rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+/* ===========================================
+   PAPERS PAGE
+   =========================================== */
+
+.papers-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e5e5e5;
+}
+
+.papers-table th {
+  text-align: left;
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #888;
+  border-bottom: 1px solid #e5e5e5;
+  background: #fafafa;
+}
+
+.papers-table td {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: top;
+}
+
+.papers-table tr:last-child td {
+  border-bottom: none;
+}
+
+.paper-country {
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap;
+  width: 180px;
+}
+
+.paper-link {
+  color: #333;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.paper-link:hover {
+  text-decoration: underline;
+}
+
+.paper-authors {
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 0.25rem;
+}
+
+.paper-title {
+  display: block;
+  color: #555;
+  font-size: 0.875rem;
+  font-style: italic;
+  margin-top: 0.25rem;
+}
+
+/* ===========================================
+   FOOTER
+   =========================================== */
+
+.footer {
+  margin-top: 4rem;
+  padding: 1.5rem;
+  text-align: center;
+  border-top: 1px solid #e5e5e5;
+  background: #fafafa;
+}
+
+.footer p {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.footer a {
+  color: #333;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* ===========================================
+   RESPONSIVE - MOBILE (max-width: 768px)
    =========================================== */
 
 @media (max-width: 768px) {
@@ -676,19 +688,10 @@ h1 {
     font-size: 0.85rem;
   }
 
-  /* Controls row - stack vertically */
+  /* Controls - stack vertically */
   .controls-row {
     flex-direction: column;
     gap: 1rem;
-  }
-
-  /* Chart legend smaller on mobile */
-  .recharts-legend-wrapper {
-    font-size: 12px !important;
-  }
-
-  .recharts-legend-item-text {
-    font-size: 12px !important;
   }
 
   /* Parameters */
@@ -716,7 +719,24 @@ h1 {
     font-size: 0.85rem;
     text-align: left;
   }
-  
+
+  /* Number box */
+  .number-box {
+    max-width: none;
+    width: 100%;
+    padding: 0.7rem;
+  }
+
+  .number-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 0.1rem;
+  }
+
+  .number-value {
+    font-size: 1.2rem;
+  }
+
   /* Revenue box */
   .revenue-box {
     min-width: auto;
@@ -727,50 +747,62 @@ h1 {
     font-size: 1.5rem;
   }
 
-/* Number box */
-.number-box {
-  max-width: none;
-  width: 100%;
-  padding: 0.7rem;
-}
-
-.number-label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  margin-bottom: 0.1rem;
-}
-
-.number-value {
-  align-self: center;
-  font-size: 1.2rem;
-}
-
-  /* Chart container */
+  /* Chart */
   .chart-container {
     padding: 1rem;
-  }
-
-  .chart-header {
-    flex-direction: column;
-    gap: 0.5rem;
-    align-items: flex-start;
   }
 
   .chart-title {
     font-size: 0.85rem;
   }
 
-  /* Hide CTA button on mobile */
-  .cta-button {
-    display: none;
+  .chart-footer {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
   }
 
-  /* Chart axis labels smaller on mobile */
+  .scale-mode-selector {
+    order: 1;
+  }
+
+  .scale-label {
+    font-size: 12px;
+  }
+
+  .scale-buttons {
+    gap: 3px;
+  }
+
+  .scale-button {
+    padding: 6px 6px;
+    font-size: 11px;
+  }
+
+  .source-link {
+    order: 2;
+    align-self: flex-end;
+  }
+
+  /* Recharts adjustments */
+  .recharts-legend-wrapper {
+    font-size: 12px !important;
+  }
+
+  .recharts-legend-item-text {
+    font-size: 12px !important;
+  }
+
   .recharts-xAxis .recharts-cartesian-axis-tick-value {
     font-size: 9px !important;
   }
 
-  /* Papers table - cards layout */
+  /* Hide CTA button */
+  .cta-button {
+    display: none;
+  }
+
+  /* Papers table - card layout */
   .papers-table,
   .papers-table thead,
   .papers-table tbody,
@@ -834,39 +866,14 @@ h1 {
 
   /* Footer */
   .footer {
-    padding: 1rem 1rem;
-  }
-
-  .chart-footer {
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .scale-mode-selector {
-    order: 1;
-    gap: 6px;
-  }
-  
-  .scale-label {
-    font-size: 12px;
-  }
-  
-  .scale-buttons {
-    gap: 3px;
-  }
-  
-  .scale-button {
-    padding: 4px 8px;
-    font-size: 11px;
-  }
-  
-  .source-link {
-    order: 2;
+    padding: 1rem;
   }
 }
 
-/* Extra small screens */
+/* ===========================================
+   RESPONSIVE - EXTRA SMALL (max-width: 480px)
+   =========================================== */
+
 @media (max-width: 480px) {
   h1 {
     font-size: 1.25rem;

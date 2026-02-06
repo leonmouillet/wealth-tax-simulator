@@ -1,57 +1,71 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, Tooltip, ResponsiveContainer, ReferenceLine, ReferenceArea } from 'recharts'
+
+// Constants
+const MOBILE_BREAKPOINT = 768
+const Y_DOMAIN_MAX = 60
 
 function ComparisonSection({ countries }) {
 
+  // State management
   const [isMobile, setIsMobile] = useState(false)
   const [hoveredGroupIndex, setHoveredGroupIndex] = useState(null)
 
+  // Handle mobile detection
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    const checkMobile = () => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
     checkMobile()
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  const groups = countries[0].groups.map(g => g.group)
-  const numGroups = groups.length
-  
-  // Calculer les positions X (milieu de chaque groupe)
-  const xPositions = groups.map((_, idx) => ((idx + 0.5) / numGroups) * 100)
-  
-  // Calculer les frontières (extrémités des groupes)
-  const groupBoundaries = [0]
-  for (let i = 1; i <= numGroups; i++) {
-    groupBoundaries.push((i / numGroups) * 100)
-  }
-  
-  // Créer les données du chart avec positions X
-  const chartData = groups.map((group, idx) => {
-    const entry = { group, x: xPositions[idx] }
-    countries.forEach((country) => {
-      const rate = country.groups[idx]?.totalRate
-      entry[country.country] = rate ? rate * 100 : null
+  // Memoized data calculations
+  const { groups, numGroups, xPositions, groupBoundaries, chartData, xAxisLabels } = useMemo(() => {
+    const grps = countries[0].groups.map(g => g.group)
+    const num = grps.length
+    
+    // Calculate X positions (center of each group)
+    const xPos = grps.map((_, idx) => ((idx + 0.5) / num) * 100)
+    
+    // Calculate group boundaries
+    const boundaries = Array.from({ length: num + 1 }, (_, i) => (i / num) * 100)
+    
+    // Build chart data with rates for each country
+    const data = grps.map((group, idx) => {
+      const entry = { group, x: xPos[idx] }
+      countries.forEach((country) => {
+        const rate = country.groups[idx]?.totalRate
+        entry[country.country] = rate ? rate * 100 : null
+      })
+      return entry
     })
-    return entry
-  })
 
-  // Labels pour l'axe X
-  const xAxisLabels = groups.map((group, idx) => ({
-    position: xPositions[idx],
-    label: group
-  }))
+    // Build X-axis labels
+    const labels = grps.map((group, idx) => ({
+      position: xPos[idx],
+      label: group
+    }))
 
-  // Fonction pour déterminer le groupe survolé
-  const handleMouseMove = (state) => {
-    if (!state || !state.activeLabel) {
+    return {
+      groups: grps,
+      numGroups: num,
+      xPositions: xPos,
+      groupBoundaries: boundaries,
+      chartData: data,
+      xAxisLabels: labels
+    }
+  }, [countries])
+
+  // Handle mouse movement to highlight hovered group
+  const handleMouseMove = useCallback((state) => {
+    if (!state?.activeLabel) {
       setHoveredGroupIndex(null)
       return
     }
     
-    // activeLabel contient la valeur X du point survolé
     const xValue = parseFloat(state.activeLabel)
     
-    // Trouver l'index du groupe qui correspond à cette position X
+    // Find closest group to mouse position
     let closestIndex = 0
     let minDistance = Math.abs(xPositions[0] - xValue)
     
@@ -64,11 +78,11 @@ function ComparisonSection({ countries }) {
     }
     
     setHoveredGroupIndex(closestIndex)
-  }
+  }, [xPositions])
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     setHoveredGroupIndex(null)
-  }
+  }, [])
 
   return (
     <ResponsiveContainer width="100%" height={450}>
@@ -80,7 +94,7 @@ function ComparisonSection({ countries }) {
       >
         <CartesianGrid strokeDasharray="3 3" vertical={false} />
         
-        {/* Zone grisée pour le groupe survolé */}
+        {/* Shaded area for hovered group (disabled on mobile) */}
         {!isMobile && hoveredGroupIndex !== null && hoveredGroupIndex < groupBoundaries.length - 1 && (
           <ReferenceArea
             x1={groupBoundaries[hoveredGroupIndex]}
@@ -91,7 +105,7 @@ function ComparisonSection({ countries }) {
           />
         )}
         
-        {/* Lignes verticales aux frontières des groupes */}
+        {/* Vertical lines at group boundaries */}
         {groupBoundaries.map((boundary, idx) => (
           <ReferenceLine 
             key={`boundary-${idx}`}
@@ -101,7 +115,7 @@ function ComparisonSection({ countries }) {
           />
         ))}
         
-        {/* Labels aux centres des groupes */}
+        {/* Labels at group centers */}
         {xAxisLabels.map((item, idx) => (
           <ReferenceLine 
             key={`label-${idx}`}
@@ -121,7 +135,7 @@ function ComparisonSection({ countries }) {
           />
         ))}
         
-        {/* Axe X avec ticks aux frontières */}
+        {/* X-axis with ticks at boundaries */}
         <XAxis 
           dataKey="x"
           type="number"
@@ -133,7 +147,8 @@ function ComparisonSection({ countries }) {
           height={80}
         />
         
-        <YAxis domain={[0, 60]} tickFormatter={(v) => `${v}%`} />
+        <YAxis domain={[0, Y_DOMAIN_MAX]} tickFormatter={(v) => `${v}%`} />
+
         {!isMobile && (
           <Tooltip 
             formatter={(v) => v !== null && v !== undefined ? `${v.toFixed(1)}%` : 'N/A'}
@@ -144,7 +159,10 @@ function ComparisonSection({ countries }) {
             cursor={false}
           />
         )}
+
         <Legend />
+        
+        {/* Country lines */}
         {countries.map((country) => (
           <Line
             key={country.country}

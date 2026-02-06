@@ -14,9 +14,9 @@ function Papers() {
     },
     {
       country: "United States",
-      authors: "Saez, Zucman (2019)",
-      title: "The Triumph of Injustice",
-      url: "https://gabriel-zucman.eu/"
+      authors: "Piketty, Saez, Zucman (2018)",
+      title: "Distributional National Accounts: Methods and Estimates for the United States",
+      url: "https://gabriel-zucman.eu/usdina/"
     },
     {
       country: "United States",

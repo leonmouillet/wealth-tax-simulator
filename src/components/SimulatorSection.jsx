@@ -1,10 +1,19 @@
-import { useState } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { computeChartData, computeTotalRevenue, computeTotalIndividuals } from '../utils/calculations'
 import Parameters from './Parameters'
 import Chart from './Chart'
 
+// Tooltip descriptions for UI elements
+const TOOLTIP_DESCRIPTIONS = {
+  regular: 'Each income group occupies the same width on the x-axis',
+  income: 'Groups are sized proportionally to their share of total income',
+  population: 'Groups are sized proportionally to their number of individuals',
+  individualsAffected: 'Number of tax units whose wealth exceeds the selected threshold. Only tax units with current individual taxes (relative to wealth) lower than the selected tax rate would have to pay the minimum wealth tax.'
+}
+
 function SimulatorSection({ countries }) {
+  // State management
   const [countryData, setCountryData] = useState(countries[0])
   const [threshold, setThreshold] = useState(100)
   const [taxRate, setTaxRate] = useState(2)
@@ -12,116 +21,86 @@ function SimulatorSection({ countries }) {
   const [hoveredElement, setHoveredElement] = useState(null)
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 })
 
+  // Compute tax metrics
   const taxRateDecimal = taxRate / 100
-  const chartData = computeChartData(countryData, taxRateDecimal, threshold)
-  const totalRevenue = computeTotalRevenue(countryData, taxRateDecimal, threshold)
-  const totalIndividuals = computeTotalIndividuals(countryData, threshold)
+  const chartData = useMemo(() => 
+    computeChartData(countryData, taxRateDecimal, threshold),
+    [countryData, taxRateDecimal, threshold]
+  )
+  const totalRevenue = useMemo(() => 
+    computeTotalRevenue(countryData, taxRateDecimal, threshold),
+    [countryData, taxRateDecimal, threshold]
+  )
+  const totalIndividuals = useMemo(() => 
+    computeTotalIndividuals(countryData, threshold),
+    [countryData, threshold]
+  )
 
-  // Descriptions pour les tooltips
-  const tooltipDescriptions = {
-    regular: 'Each income group occupies the same width on the x-axis',
-    income: 'Groups are sized proportionally to their share of total income',
-    population: 'Groups are sized proportionally to their number of individuals',
-    individualsAffected: 'Number of tax units whose wealth exceeds the selected threshold. Only tax units with current individual taxes (relative to wealth) lower than the selected tax rate would have to pay the minimum wealth tax.'
-  }
-
-  const handleMouseEnter = (element, event) => {
+  // Tooltip event handlers
+  const handleMouseEnter = useCallback((element, event) => {
     setHoveredElement(element)
-    updateTooltipPosition(event)
-  }
+    setTooltipPosition({ x: event.clientX, y: event.clientY })
+  }, [])
 
-  const handleMouseMove = (event) => {
+  const handleMouseMove = useCallback((event) => {
     if (hoveredElement) {
-      updateTooltipPosition(event)
+      setTooltipPosition({ x: event.clientX, y: event.clientY })
     }
-  }
+  }, [hoveredElement])
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     setHoveredElement(null)
-  }
+  }, [])
 
-  const updateTooltipPosition = (event) => {
-    setTooltipPosition({
-      x: event.clientX,
-      y: event.clientY
-    })
-  }
-
-  // Calculer les positions X en fonction du mode
-  const computeXPositions = () => {
+  // Calculate X positions based on scale mode
+  const xPositions = useMemo(() => {
     const groups = countryData.groups
+    const numGroups = groups.length
 
     if (xScaleMode === 'regular') {
-      // En mode regular : espacer régulièrement, points au MILIEU de chaque intervalle
-      const numGroups = groups.length
+      // Regular mode: evenly spaced groups, points at center
       return groups.map((_, i) => ((i + 0.5) / numGroups) * 100)
     }
 
-    if (xScaleMode === 'population') {
-      // Calculer les positions basées sur le nombre d'individus (MILIEU de chaque groupe)
-      const totalValue = groups.reduce((sum, g) => sum + (g.n || 0), 0)
-      let cumulative = 0
-      const positions = groups.map(g => {
-        const groupSize = g.n || 0
-        const midPoint = cumulative + groupSize / 2
-        cumulative += groupSize
-        return (midPoint / totalValue) * 100
-      })
-      return positions
-    } else if (xScaleMode === 'income') {
-      // Calculer les positions basées sur la part de revenu (MILIEU de chaque groupe)
-      const totalValue = groups.reduce((sum, g) => sum + (g.incomeShare || 0), 0)
-      let cumulative = 0
-      const positions = groups.map(g => {
-        const groupSize = g.incomeShare || 0
-        const midPoint = cumulative + groupSize / 2
-        cumulative += groupSize
-        return (midPoint / totalValue) * 100
-      })
-      return positions
-    }
+    // Population or income mode: proportional spacing
+    const key = xScaleMode === 'population' ? 'n' : 'incomeShare'
+    const totalValue = groups.reduce((sum, g) => sum + (g[key] || 0), 0)
+    
+    let cumulative = 0
+    return groups.map(g => {
+      const groupSize = g[key] || 0
+      const midPoint = cumulative + groupSize / 2
+      cumulative += groupSize
+      return (midPoint / totalValue) * 100
+    })
+  }, [countryData.groups, xScaleMode])
 
-    return null
-  }
-
-  // Calculer les frontières des groupes (pour les lignes verticales et les ticks)
-  const computeGroupBoundaries = () => {
+  // Calculate group boundaries for vertical lines and ticks
+  const groupBoundaries = useMemo(() => {
     const groups = countryData.groups
-    const boundaries = [0] // Commence à 0
+    const numGroups = groups.length
 
     if (xScaleMode === 'regular') {
-      // En mode regular : frontières régulièrement espacées
-      const numGroups = groups.length
-      for (let i = 1; i <= numGroups; i++) {
-        boundaries.push((i / numGroups) * 100)
-      }
-      return boundaries
+      // Regular mode: evenly spaced boundaries
+      return Array.from({ length: numGroups + 1 }, (_, i) => (i / numGroups) * 100)
     }
 
-    if (xScaleMode === 'population') {
-      const totalValue = groups.reduce((sum, g) => sum + (g.n || 0), 0)
-      let cumulative = 0
-      groups.forEach(g => {
-        cumulative += (g.n || 0)
-        boundaries.push((cumulative / totalValue) * 100)
-      })
-    } else if (xScaleMode === 'income') {
-      const totalValue = groups.reduce((sum, g) => sum + (g.incomeShare || 0), 0)
-      let cumulative = 0
-      groups.forEach(g => {
-        cumulative += (g.incomeShare || 0)
-        boundaries.push((cumulative / totalValue) * 100)
-      })
-    }
-
+    // Population or income mode: proportional boundaries
+    const key = xScaleMode === 'population' ? 'n' : 'incomeShare'
+    const totalValue = groups.reduce((sum, g) => sum + (g[key] || 0), 0)
+    
+    const boundaries = [0]
+    let cumulative = 0
+    groups.forEach(g => {
+      cumulative += (g[key] || 0)
+      boundaries.push((cumulative / totalValue) * 100)
+    })
     return boundaries
-  }
-
-  const xPositions = computeXPositions()
-  const groupBoundaries = computeGroupBoundaries()
+  }, [countryData.groups, xScaleMode])
 
   return (
     <div>
+      {/* Country selection tabs */}
       <div className="country-tabs">
         {countries.map((country) => (
           <button
@@ -135,6 +114,7 @@ function SimulatorSection({ countries }) {
         ))}
       </div>
       
+      {/* Tax parameters and individuals affected */}
       <div className="controls-row">
         <Parameters
           taxRate={taxRate}
@@ -154,11 +134,13 @@ function SimulatorSection({ countries }) {
           >
             Number of tax units potentially subject to the tax
           </span>
-          <span className="number-value">{(Math.round(totalIndividuals / 10) * 10).toLocaleString('en-US')}</span>
+          <span className="number-value" style={{ color: countryData.color }}>
+            {(Math.round(totalIndividuals / 10) * 10).toLocaleString('en-US')}
+          </span>
         </div>
-
       </div>
       
+      {/* Chart with X-axis scale controls */}
       <div className="chart-container">
         <Chart 
           data={chartData} 
@@ -207,10 +189,13 @@ function SimulatorSection({ countries }) {
         </div>
       </div>
     
+      {/* Revenue metrics */}
       <div className="revenue-box">
         <div className="revenue-col">
           <span className="revenue-label">Extra fiscal revenues</span>
-          <span className="revenue-value">{Math.round(totalRevenue).toLocaleString('en-US')} B{countryData.currency}</span>
+          <span className="revenue-value" style={{ color: countryData.color }}>
+            {Math.round(totalRevenue).toLocaleString('en-US')} B{countryData.currency}
+          </span>
           <span className="revenue-label">each year</span>
         </div>
         <div className="revenue-col">
@@ -228,7 +213,7 @@ function SimulatorSection({ countries }) {
         </div>
       </div>
 
-      {/* Tooltip */}
+      {/* Tooltip for hover information */}
       {hoveredElement && (
         <div 
           className="mode-tooltip"
@@ -240,10 +225,9 @@ function SimulatorSection({ countries }) {
             zIndex: 1000
           }}
         >
-          {tooltipDescriptions[hoveredElement]}
+          {TOOLTIP_DESCRIPTIONS[hoveredElement]}
         </div>
       )}
-        
     </div>
   )
 }

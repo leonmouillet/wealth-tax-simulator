@@ -1,160 +1,135 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, Tooltip, ResponsiveContainer, ReferenceLine, ReferenceArea } from 'recharts'
+
+// Constants
+const MOBILE_BREAKPOINT = 768
+const MIN_LABEL_SPACING = 3 // Minimum spacing between labels in % of X-axis
 
 function Chart({ data, originalData, color = "#e63946", xPositions = null, groupBoundaries = null, xScaleMode = 'regular' }) {
 
+  // State management
   const [isMobile, setIsMobile] = useState(false)
   const [hoveredGroupIndex, setHoveredGroupIndex] = useState(null)
   const [shouldAnimate, setShouldAnimate] = useState(false)
   const previousModeRef = useRef(xScaleMode)
   
+  // Handle mobile detection
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    const checkMobile = () => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
     checkMobile()
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  // Détecter les changements de mode X
+  // Detect X-scale mode changes to disable animation
   useEffect(() => {
     if (previousModeRef.current !== xScaleMode) {
-      // Mode X vient de changer : pas d'animation
       setShouldAnimate(false)
       previousModeRef.current = xScaleMode
     } else {
-      // Changement de données (taxe) : animation
       setShouldAnimate(true)
     }
   }, [xScaleMode, data])
 
-  const chartData = xPositions 
-    ? data.map((d, i) => ({ ...d, x: xPositions[i] }))
-    : data
+  // Memoized chart data with X positions
+  const chartData = useMemo(() => 
+    xPositions ? data.map((d, i) => ({ ...d, x: xPositions[i] })) : data,
+    [data, xPositions]
+  )
 
-  const maxRate = Math.max(...data.map(d => Math.max(d.currentRate || 0, d.reformRate || 0)))
-  const yMax = Math.ceil(maxRate / 10) * 10
-  const yTicks = Array.from({ length: yMax / 10 + 1 }, (_, i) => i * 10)
+  // Memoized Y-axis configuration
+  const { yMax, yTicks } = useMemo(() => {
+    const maxRate = Math.max(...data.map(d => Math.max(d.currentRate || 0, d.reformRate || 0)))
+    const max = Math.ceil(maxRate / 10) * 10
+    return {
+      yMax: max,
+      yTicks: Array.from({ length: max / 10 + 1 }, (_, i) => i * 10)
+    }
+  }, [data])
 
-  // Fonction pour déterminer quels labels afficher
-  const getVisibleLabels = () => {
+  // Determine which labels to display (all in regular mode, filtered in population/income mode)
+  const visibleLabelIndices = useMemo(() => {
     if (!xPositions || xPositions.length === 0) return []
     
-    // En mode regular, afficher tous les labels
+    // Show all labels in regular mode
     if (xScaleMode === 'regular') {
-      return data.map((d, idx) => idx)
+      return data.map((_, idx) => idx)
     }
     
-    // En mode population/income, calculer dynamiquement
-    const visibleIndices = []
-    
-    // Estimation de l'espace minimum nécessaire par label (en % de l'axe X)
-    const minSpacing = 6
-    
-    // Priorité des groupes
+    // Priority-based greedy selection for population/income modes
     const getPriority = (group) => {
-      if (group === 'Billionaires') return 100
-      if (group.includes('P99.99')) return 80
-      if (group.includes('P99.9')) return 70
-      if (group.includes('P99')) return 60
-      if (group.includes('P90')) return 50
-      if (group.includes('P10') || group.includes('P20')) return 40
-      return 30
+      if (group === 'Billionaires') return 0
+      if (group.includes('P99.99')) return 1
+      if (group.includes('P99.9')) return 2
+      if (group.includes('P99')) return 3
+      if (group.includes('P90')) return 4
+      if (group.includes('P10') || group.includes('P20')) return 5
+      return 6
     }
     
-    // Créer une liste avec positions, priorités et indices
-    const labelData = data.map((d, idx) => ({
-      index: idx,
-      position: xPositions[idx],
-      group: d.group,
-      priority: getPriority(d.group)
-    }))
+    // Sort indices by priority
+    const sortedIndices = Array.from({ length: data.length }, (_, i) => i)
+      .sort((a, b) => getPriority(data[a].group) - getPriority(data[b].group))
     
-    // Trier par priorité décroissante
-    const sortedByPriority = [...labelData].sort((a, b) => b.priority - a.priority)
-    
-    // Algorithme greedy
+    // Greedy selection: add label if it doesn't overlap with already selected ones
     const selected = []
-    
-    for (const item of sortedByPriority) {
-      let canAdd = true
-      
-      for (const selectedIdx of selected) {
-        const distance = Math.abs(xPositions[item.index] - xPositions[selectedIdx])
-        if (distance < minSpacing) {
-          canAdd = false
-          break
-        }
-      }
-      
-      if (canAdd) {
-        selected.push(item.index)
+    for (const idx of sortedIndices) {
+      if (selected.every(sel => Math.abs(xPositions[idx] - xPositions[sel]) >= MIN_LABEL_SPACING)) {
+        selected.push(idx)
       }
     }
     
     return selected.sort((a, b) => a - b)
-  }
+  }, [data, xPositions, xScaleMode])
 
-  const visibleLabelIndices = getVisibleLabels()
+  // Build X-axis label data for ReferenceLine components
+  const xAxisLabels = useMemo(() => {
+    if (!xPositions) return []
+    return visibleLabelIndices.map(idx => ({
+      position: xPositions[idx],
+      label: data[idx]?.group
+    }))
+  }, [data, xPositions, visibleLabelIndices])
 
-  // Créer les labels pour l'axe X
-  const getXAxisLabels = () => {
-    return xPositions.map((pos, idx) => {
-      if (!visibleLabelIndices.includes(idx)) {
-        return null
-      }
-      const group = data[idx]?.group
-      return { position: pos, label: group }
-    }).filter(Boolean)
-  }
-
-  const xAxisLabels = getXAxisLabels()
-
-  // Fonction pour déterminer le groupe survolé en fonction de la position X
-  const handleMouseMove = (state) => {
-    if (!state || !state.activeLabel) {
+  // Handle mouse movement to highlight hovered group
+  const handleMouseMove = useCallback((state) => {
+    if (!state?.activeLabel || !xPositions) {
       setHoveredGroupIndex(null)
       return
     }
     
-    // activeLabel contient la valeur X du point survolé
     const xValue = parseFloat(state.activeLabel)
     
-    // Trouver l'index du groupe qui correspond à cette position X
-    if (xPositions) {
-      // Trouver le groupe dont la position est la plus proche
-      let closestIndex = 0
-      let minDistance = Math.abs(xPositions[0] - xValue)
-      
-      for (let i = 1; i < xPositions.length; i++) {
-        const distance = Math.abs(xPositions[i] - xValue)
-        if (distance < minDistance) {
-          minDistance = distance
-          closestIndex = i
-        }
-      }
-      
-      setHoveredGroupIndex(closestIndex)
-    }
-  }
-
-  const handleMouseLeave = () => {
-    setHoveredGroupIndex(null)
-  }
-
-  // Custom Tooltip avec informations supplémentaires
-  const CustomTooltip = ({ active, payload, label }) => {
-    if (!active || !payload || payload.length === 0) return null
+    // Find closest group to mouse position
+    let closestIndex = 0
+    let minDistance = Math.abs(xPositions[0] - xValue)
     
-    // Trouver le groupe correspondant via label (qui contient la position X)
+    for (let i = 1; i < xPositions.length; i++) {
+      const distance = Math.abs(xPositions[i] - xValue)
+      if (distance < minDistance) {
+        minDistance = distance
+        closestIndex = i
+      }
+    }
+    
+    setHoveredGroupIndex(closestIndex)
+  }, [xPositions])
+
+  const handleMouseLeave = useCallback(() => {
+    setHoveredGroupIndex(null)
+  }, [])
+
+  // Custom tooltip with tax rates and additional info (income share, population)
+  const CustomTooltip = useCallback(({ active, payload, label }) => {
+    if (!active || !payload?.length) return null
+    
     const groupData = chartData.find(d => d.x === label)
     if (!groupData) return null
     
-    // Trouver l'index du groupe
     const groupIndex = data.findIndex(d => d.group === groupData.group)
     if (groupIndex === -1) return null
     
-    // Accéder aux données originales
-    const originalGroup = originalData ? originalData[groupIndex] : null
+    const originalGroup = originalData?.[groupIndex]
     
     return (
       <div style={{
@@ -174,7 +149,7 @@ function Chart({ data, originalData, color = "#e63946", xPositions = null, group
           </div>
         ))}
         
-        {/* Informations supplémentaires */}
+        {/* Additional info: income share and population */}
         {originalGroup && (originalGroup.incomeShare !== null || originalGroup.n) && (
           <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px solid #eee' }}>
             {originalGroup.incomeShare !== null && originalGroup.incomeShare !== undefined && (
@@ -191,11 +166,15 @@ function Chart({ data, originalData, color = "#e63946", xPositions = null, group
         )}
       </div>
     )
-  }
+  }, [chartData, data, originalData])
 
   return (
     <div>
-      <h3 className="chart-title">Effect of the wealth tax on tax progressivity</h3>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+        <h3 className="chart-title" style={{ margin: 0 }}>
+          Effect of the wealth tax on tax progressivity
+        </h3>
+      </div>
       <ResponsiveContainer width="100%" height={400}>
         <LineChart 
           key={xScaleMode}
@@ -206,7 +185,7 @@ function Chart({ data, originalData, color = "#e63946", xPositions = null, group
         >
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           
-          {/* Zone grisée pour le groupe survolé */}
+          {/* Shaded area for hovered group (disabled on mobile) */}
           {!isMobile && hoveredGroupIndex !== null && groupBoundaries && hoveredGroupIndex < groupBoundaries.length - 1 && (
             <ReferenceArea
               x1={groupBoundaries[hoveredGroupIndex]}
@@ -217,8 +196,8 @@ function Chart({ data, originalData, color = "#e63946", xPositions = null, group
             />
           )}
           
-          {/* Lignes verticales aux frontières des groupes */}
-          {groupBoundaries && groupBoundaries.map((boundary, idx) => (
+          {/* Vertical lines at group boundaries */}
+          {groupBoundaries?.map((boundary, idx) => (
             <ReferenceLine 
               key={`boundary-${idx}`}
               x={boundary} 
@@ -227,7 +206,7 @@ function Chart({ data, originalData, color = "#e63946", xPositions = null, group
             />
           ))}
           
-          {/* Labels aux centres des groupes comme ReferenceLine avec Label */}
+          {/* Labels at group centers */}
           {xAxisLabels.map((item, idx) => (
             <ReferenceLine 
               key={`label-${idx}`}
@@ -247,7 +226,7 @@ function Chart({ data, originalData, color = "#e63946", xPositions = null, group
             />
           ))}
           
-          {/* Axe X avec ticks aux frontières */}
+          {/* X-axis with ticks at boundaries */}
           <XAxis 
             dataKey="x" 
             type="number" 
@@ -256,17 +235,25 @@ function Chart({ data, originalData, color = "#e63946", xPositions = null, group
             tickLine={true}
             tick={{ stroke: '#666' }}
             tickFormatter={() => ''}
-            height={80}
+            height={100}
           />
           
           <YAxis domain={[0, yMax]} tickFormatter={(v) => `${v}%`} ticks={yTicks} interval={0} />
+          
           {!isMobile && (
             <Tooltip 
               content={<CustomTooltip />}
               cursor={false}
             />
           )}
-          <Legend />
+          
+        <Legend 
+          verticalAlign="top" 
+          align="right"
+          wrapperStyle={{ paddingBottom: '10px' }}
+        />
+                  
+          {/* Data lines */}
           <Line 
             type="monotone" 
             dataKey="currentRate" 

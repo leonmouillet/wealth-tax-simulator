@@ -43,7 +43,14 @@ function Methodology() {
         </p>
         <p>
           Download the <a href="/wealth-tax-simulation.xlsx" download className="download-link">Excel version of the simulator</a> for complete details of the computations. 
-          We welcome any comments, questions or suggestions regarding these simulations. Please do not hesitate to contact us at le.mouillet@gmail.com. 
+        </p>
+        <p>
+          All our graphs and simulations rely on publicly available data and fully transparent methods. We are committed to continuous improvement and welcome your feedback, questions, or suggestions at <a href="mailto:le.mouillet@gmail.com">le.mouillet@gmail.com</a>.
+        </p>
+        <p>
+          Given limited data on wealth distribution, our estimates rely on several assumptions and should be interpreted as orders of magnitude rather than precise figures. 
+          The scarcity of reliable information on the ultra-wealthy is the main constraint on accuracy. 
+          Implementing a wealth tax would not only improve progressivity and generate revenue, it would also provide much-needed data on wealth concentration, helping refine future estimates.
         </p>
 
       </div>
