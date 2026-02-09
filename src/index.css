@@ -468,6 +468,30 @@ h1 {
   background: #333;
 }
 
+/* Export */
+.export-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.export-button {
+  padding: 4px 8px;
+  font-size: 11px;
+  border: 1px solid #e0e0e0;
+  background: white;
+  color: #333;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-weight: 500;
+}
+
+.export-button:hover {
+  background: #f5f5f5;
+  border-color: #ccc;
+}
+
 /* ===========================================
    METHODOLOGY PAGE
    =========================================== */
@@ -757,9 +781,10 @@ h1 {
   }
 
   .chart-footer {
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     gap: 10px;
+    margin-left: 0;
   }
 
   .scale-mode-selector {

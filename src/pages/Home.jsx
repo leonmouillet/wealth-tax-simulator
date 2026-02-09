@@ -32,7 +32,6 @@ function Home() {
             </button>
           </div>
           <ComparisonSection countries={ALL_COUNTRIES} />
-          <Link to="/papers" className="source-link">Sources →</Link>
         </div>
       </section>
 

@@ -1,5 +1,4 @@
 import { useState, useMemo, useCallback } from 'react'
-import { Link } from 'react-router-dom'
 import { computeChartData, computeTotalRevenue, computeTotalIndividuals } from '../utils/calculations'
 import Parameters from './Parameters'
 import Chart from './Chart'
@@ -17,7 +16,7 @@ function SimulatorSection({ countries }) {
   const [countryData, setCountryData] = useState(countries[0])
   const [threshold, setThreshold] = useState(100)
   const [taxRate, setTaxRate] = useState(2)
-  const [xScaleMode, setXScaleMode] = useState('regular') // 'regular', 'population', 'income'
+  const [xScaleMode, setXScaleMode] = useState('regular')
   const [hoveredElement, setHoveredElement] = useState(null)
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 })
 
@@ -58,11 +57,9 @@ function SimulatorSection({ countries }) {
     const numGroups = groups.length
 
     if (xScaleMode === 'regular') {
-      // Regular mode: evenly spaced groups, points at center
       return groups.map((_, i) => ((i + 0.5) / numGroups) * 100)
     }
 
-    // Population or income mode: proportional spacing
     const key = xScaleMode === 'population' ? 'n' : 'incomeShare'
     const totalValue = groups.reduce((sum, g) => sum + (g[key] || 0), 0)
     
@@ -75,17 +72,15 @@ function SimulatorSection({ countries }) {
     })
   }, [countryData.groups, xScaleMode])
 
-  // Calculate group boundaries for vertical lines and ticks
+  // Calculate group boundaries
   const groupBoundaries = useMemo(() => {
     const groups = countryData.groups
     const numGroups = groups.length
 
     if (xScaleMode === 'regular') {
-      // Regular mode: evenly spaced boundaries
       return Array.from({ length: numGroups + 1 }, (_, i) => (i / numGroups) * 100)
     }
 
-    // Population or income mode: proportional boundaries
     const key = xScaleMode === 'population' ? 'n' : 'incomeShare'
     const totalValue = groups.reduce((sum, g) => sum + (g[key] || 0), 0)
     
@@ -140,7 +135,7 @@ function SimulatorSection({ countries }) {
         </div>
       </div>
       
-      {/* Chart with X-axis scale controls */}
+      {/* Chart container */}
       <div className="chart-container">
         <Chart 
           data={chartData} 
@@ -149,44 +144,15 @@ function SimulatorSection({ countries }) {
           xPositions={xPositions}
           groupBoundaries={groupBoundaries}
           xScaleMode={xScaleMode}
+          setXScaleMode={setXScaleMode}
+          onTooltipEnter={handleMouseEnter}
+          onTooltipMove={handleMouseMove}
+          onTooltipLeave={handleMouseLeave}
+          country={countryData.country}
+          threshold={threshold}
+          taxRate={taxRate}
+          currency={countryData.currency}
         />
-        
-        <div className="chart-footer">
-          <div className="scale-mode-selector">
-            <span className="scale-label">Change X-axis scale</span>
-            <div className="scale-buttons">
-              <button
-                className={`scale-button ${xScaleMode === 'regular' ? 'active' : ''}`}
-                onClick={() => setXScaleMode('regular')}
-                onMouseEnter={(e) => handleMouseEnter('regular', e)}
-                onMouseMove={handleMouseMove}
-                onMouseLeave={handleMouseLeave}
-              >
-                Regular
-              </button>
-              <button
-                className={`scale-button ${xScaleMode === 'income' ? 'active' : ''}`}
-                onClick={() => setXScaleMode('income')}
-                onMouseEnter={(e) => handleMouseEnter('income', e)}
-                onMouseMove={handleMouseMove}
-                onMouseLeave={handleMouseLeave}
-              >
-                Income
-              </button>
-              <button
-                className={`scale-button ${xScaleMode === 'population' ? 'active' : ''}`}
-                onClick={() => setXScaleMode('population')}
-                onMouseEnter={(e) => handleMouseEnter('population', e)}
-                onMouseMove={handleMouseMove}
-                onMouseLeave={handleMouseLeave}
-              >
-                Population
-              </button>
-            </div>
-          </div>
-          
-          <Link to="/methodology" className="source-link">Methodology →</Link>
-        </div>
       </div>
     
       {/* Revenue metrics */}
@@ -201,12 +167,12 @@ function SimulatorSection({ countries }) {
         <div className="revenue-col">
           <span className="revenue-label">How much is that?</span>
           {countryData.gdp && (
-            <span className="revenue-value-small">
+            <span className="revenue-value-small" style={{ color: countryData.color }}>
               {((totalRevenue / countryData.gdp) * 100).toFixed(1)}% of GDP
             </span>
           )}
           {countryData.gdp && countryData.deficit && (
-            <span className="revenue-value-small">
+            <span className="revenue-value-small" style={{ color: countryData.color }}>
               {((totalRevenue / (countryData.gdp * countryData.deficit)) * 100).toFixed(0)}% of public deficit
             </span>
           )}

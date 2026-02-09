@@ -1,11 +1,30 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react'
+import { Link } from 'react-router-dom'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, Tooltip, ResponsiveContainer, ReferenceLine, ReferenceArea } from 'recharts'
+import { exportChartToPNG, exportChartToExcel } from '../utils/export'
 
 // Constants
 const MOBILE_BREAKPOINT = 768
 const MIN_LABEL_SPACING = 3 // Minimum spacing between labels in % of X-axis
 
-function Chart({ data, originalData, color = "#e63946", xPositions = null, groupBoundaries = null, xScaleMode = 'regular' }) {
+function Chart({ 
+  data, 
+  originalData, 
+  color = "#e63946", 
+  xPositions = null, 
+  groupBoundaries = null, 
+  xScaleMode = 'regular',
+  setXScaleMode,
+  onTooltipEnter,
+  onTooltipMove,
+  onTooltipLeave,
+  country, 
+  threshold, 
+  taxRate, 
+  currency 
+}) {  
+  
+  const chartRef = useRef(null)
 
   // State management
   const [isMobile, setIsMobile] = useState(false)
@@ -130,7 +149,6 @@ function Chart({ data, originalData, color = "#e63946", xPositions = null, group
     if (groupIndex === -1) return null
     
     const originalGroup = originalData?.[groupIndex]
-    
     return (
       <div style={{
         backgroundColor: 'white',
@@ -168,6 +186,30 @@ function Chart({ data, originalData, color = "#e63946", xPositions = null, group
     )
   }, [chartData, data, originalData])
 
+  const handleExportPNG = () => {
+    if (chartRef.current) {
+      exportChartToPNG(chartRef.current, {
+        country,
+        threshold,
+        taxRate,
+        currency,
+        title: 'Effect of a wealth tax on tax progressivity. Effective tax rate along the income distribution, without and with a wealth tax',
+        type: 'simulation'
+      })
+    }
+  }
+
+  const handleExportExcel = () => {
+    exportChartToExcel(chartData, {
+      country,
+      threshold,
+      taxRate,
+      currency,
+      title: 'Effect of a wealth tax on tax progressivity. Effective tax rate along the income distribution, without and with a wealth tax',
+      type: 'simulation'
+    })
+  }
+
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
@@ -175,6 +217,7 @@ function Chart({ data, originalData, color = "#e63946", xPositions = null, group
           Effect of the wealth tax on tax progressivity
         </h3>
       </div>
+      <div ref={chartRef}>
       <ResponsiveContainer width="100%" height={400}>
         <LineChart 
           key={xScaleMode}
@@ -257,7 +300,7 @@ function Chart({ data, originalData, color = "#e63946", xPositions = null, group
           <Line 
             type="monotone" 
             dataKey="currentRate" 
-            name="Current rate" 
+            name="Current tax rate" 
             stroke="#888" 
             strokeWidth={2} 
             activeDot={false} 
@@ -267,7 +310,7 @@ function Chart({ data, originalData, color = "#e63946", xPositions = null, group
           <Line 
             type="monotone" 
             dataKey="reformRate" 
-            name="Rate under reform" 
+            name="Tax rate with a wealth tax" 
             stroke={color} 
             strokeWidth={2} 
             activeDot={false} 
@@ -276,8 +319,59 @@ function Chart({ data, originalData, color = "#e63946", xPositions = null, group
           />
         </LineChart>
       </ResponsiveContainer>
+      </div>
+     <div style={{ display: 'flex', justifyContent: 'center', marginTop: '15px', marginBottom: '10px' }}>
+        <div className="scale-mode-selector">
+          <span className="scale-label">Change X-axis scale</span>
+          <div className="scale-buttons">
+            <button
+              className={`scale-button ${xScaleMode === 'regular' ? 'active' : ''}`}
+              onClick={() => setXScaleMode('regular')}
+              onMouseEnter={(e) => onTooltipEnter?.('regular', e)}
+              onMouseMove={onTooltipMove}
+              onMouseLeave={onTooltipLeave}
+            >
+              Regular
+            </button>
+            <button
+              className={`scale-button ${xScaleMode === 'income' ? 'active' : ''}`}
+              onClick={() => setXScaleMode('income')}
+              onMouseEnter={(e) => onTooltipEnter?.('income', e)}
+              onMouseMove={onTooltipMove}
+              onMouseLeave={onTooltipLeave}
+            >
+              Income
+            </button>
+            <button
+              className={`scale-button ${xScaleMode === 'population' ? 'active' : ''}`}
+              onClick={() => setXScaleMode('population')}
+              onMouseEnter={(e) => onTooltipEnter?.('population', e)}
+              onMouseMove={onTooltipMove}
+              onMouseLeave={onTooltipLeave}
+            >
+              Population
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      {/* Footer avec export et methodology */}
+      <div className="chart-footer">
+        <div className="export-section">
+          <span className="scale-label">Export data</span>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button onClick={handleExportPNG} className="export-button">
+              🖼️ PNG
+            </button>
+            <button onClick={handleExportExcel} className="export-button">
+              📊 Excel
+            </button>
+          </div>
+        </div>
+        
+        <Link to="/methodology" className="source-link">Methodology →</Link>
+      </div>
     </div>
   )
 }
-
 export default Chart

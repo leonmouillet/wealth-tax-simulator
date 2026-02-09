@@ -1,11 +1,15 @@
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback, useRef} from 'react'
+import { Link } from 'react-router-dom'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, Tooltip, ResponsiveContainer, ReferenceLine, ReferenceArea } from 'recharts'
+import { exportChartToPNG, exportChartToExcel } from '../utils/export'
 
 // Constants
 const MOBILE_BREAKPOINT = 768
 const Y_DOMAIN_MAX = 60
 
 function ComparisonSection({ countries }) {
+  const chartRef = useRef(null)
+
 
   // State management
   const [isMobile, setIsMobile] = useState(false)
@@ -84,99 +88,143 @@ function ComparisonSection({ countries }) {
     setHoveredGroupIndex(null)
   }, [])
 
+const handleExportPNG = () => {
+  if (chartRef.current) {
+    const countryNames = countries.map(c => c.country)
+    exportChartToPNG(chartRef.current, {
+      countries: countryNames,
+      title: 'Effective tax rate along the income distribution, for different countries',
+      type: 'comparison'
+    })
+  }
+}
+
+const handleExportExcel = () => {
+  const countryNames = countries.map(c => c.country)
+  exportChartToExcel(chartData, {
+    countries: countryNames,
+    title: 'Effective tax rate along the income distribution, for different countries',
+    type: 'comparison'
+    })
+}
+
   return (
-    <ResponsiveContainer width="100%" height={450}>
-      <LineChart 
-        data={chartData} 
-        margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-      >
-        <CartesianGrid strokeDasharray="3 3" vertical={false} />
-        
-        {/* Shaded area for hovered group (disabled on mobile) */}
-        {!isMobile && hoveredGroupIndex !== null && hoveredGroupIndex < groupBoundaries.length - 1 && (
-          <ReferenceArea
-            x1={groupBoundaries[hoveredGroupIndex]}
-            x2={groupBoundaries[hoveredGroupIndex + 1]}
-            fill="#000000"
-            fillOpacity={0.05}
-            strokeOpacity={0}
-          />
-        )}
-        
-        {/* Vertical lines at group boundaries */}
-        {groupBoundaries.map((boundary, idx) => (
-          <ReferenceLine 
-            key={`boundary-${idx}`}
-            x={boundary} 
-            stroke="#d0d0d0" 
-            strokeDasharray="3 3"
-          />
-        ))}
-        
-        {/* Labels at group centers */}
-        {xAxisLabels.map((item, idx) => (
-          <ReferenceLine 
-            key={`label-${idx}`}
-            x={item.position}
-            stroke="transparent"
-            label={{
-              value: item.label,
-              position: 'bottom',
-              angle: -45,
-              offset: 10,
-              style: { 
-                fontSize: 12,
-                fill: '#666',
-                textAnchor: 'end'
-              }
-            }}
-          />
-        ))}
-        
-        {/* X-axis with ticks at boundaries */}
-        <XAxis 
-          dataKey="x"
-          type="number"
-          domain={[0, 100]}
-          ticks={groupBoundaries}
-          tickLine={true}
-          tick={{ stroke: '#666' }}
-          tickFormatter={() => ''}
-          height={80}
-        />
-        
-        <YAxis domain={[0, Y_DOMAIN_MAX]} tickFormatter={(v) => `${v}%`} />
+      <div>
+      
+      <div ref={chartRef}>
+        <ResponsiveContainer width="100%" height={450}>
+          <LineChart 
+            data={chartData} 
+            margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+          >
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+            
+            {/* Shaded area for hovered group (disabled on mobile) */}
+            {!isMobile && hoveredGroupIndex !== null && hoveredGroupIndex < groupBoundaries.length - 1 && (
+              <ReferenceArea
+                x1={groupBoundaries[hoveredGroupIndex]}
+                x2={groupBoundaries[hoveredGroupIndex + 1]}
+                fill="#000000"
+                fillOpacity={0.05}
+                strokeOpacity={0}
+              />
+            )}
+            
+            {/* Vertical lines at group boundaries */}
+            {groupBoundaries.map((boundary, idx) => (
+              <ReferenceLine 
+                key={`boundary-${idx}`}
+                x={boundary} 
+                stroke="#d0d0d0" 
+                strokeDasharray="3 3"
+              />
+            ))}
+            
+            {/* Labels at group centers */}
+            {xAxisLabels.map((item, idx) => (
+              <ReferenceLine 
+                key={`label-${idx}`}
+                x={item.position}
+                stroke="transparent"
+                label={{
+                  value: item.label,
+                  position: 'bottom',
+                  angle: -45,
+                  offset: 10,
+                  style: { 
+                    fontSize: 12,
+                    fill: '#666',
+                    textAnchor: 'end'
+                  }
+                }}
+              />
+            ))}
+            
+            {/* X-axis with ticks at boundaries */}
+            <XAxis 
+              dataKey="x"
+              type="number"
+              domain={[0, 100]}
+              ticks={groupBoundaries}
+              tickLine={true}
+              tick={{ stroke: '#666' }}
+              tickFormatter={() => ''}
+              height={100}
+            />
+            
+            <YAxis domain={[0, Y_DOMAIN_MAX]} tickFormatter={(v) => `${v}%`} />
 
-        {!isMobile && (
-          <Tooltip 
-            formatter={(v) => v !== null && v !== undefined ? `${v.toFixed(1)}%` : 'N/A'}
-            labelFormatter={(x) => chartData.find(d => d.x === x)?.group || ''}
-            contentStyle={{ fontSize: '13px', padding: '6px 10px' }}
-            itemStyle={{ fontSize: '13px', padding: '2px 0' }}
-            labelStyle={{ fontSize: '13px', fontWeight: 600, marginBottom: '4px' }}
-            cursor={false}
-          />
-        )}
+            {!isMobile && (
+              <Tooltip 
+                formatter={(v) => v !== null && v !== undefined ? `${v.toFixed(1)}%` : 'N/A'}
+                labelFormatter={(x) => chartData.find(d => d.x === x)?.group || ''}
+                contentStyle={{ fontSize: '13px', padding: '6px 10px' }}
+                itemStyle={{ fontSize: '13px', padding: '2px 0' }}
+                labelStyle={{ fontSize: '13px', fontWeight: 600, marginBottom: '4px' }}
+                cursor={false}
+              />
+            )}
 
-        <Legend />
-        
-        {/* Country lines */}
-        {countries.map((country) => (
-          <Line
-            key={country.country}
-            type="monotone"
-            dataKey={country.country}
-            stroke={country.color}
-            strokeWidth={2}
-            dot={{ r: 3 }}
-            activeDot={false}
-            connectNulls
-          />
-        ))}
-      </LineChart>
-    </ResponsiveContainer>
+            <Legend 
+              verticalAlign="top" 
+              align="right"
+              wrapperStyle={{ paddingBottom: '10px' }}
+            />            
+            {/* Country lines */}
+            {countries.map((country) => (
+              <Line
+                key={country.country}
+                type="monotone"
+                dataKey={country.country}
+                stroke={country.color}
+                strokeWidth={2}
+                dot={{ r: 3 }}
+                activeDot={false}
+                connectNulls
+              />
+            ))}
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+
+    <div className="chart-footer" style={{ marginTop: '20px' }}>
+      <div className="export-section">
+        <span className="scale-label">Export data</span>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button onClick={handleExportPNG} className="export-button">
+            🖼️ PNG
+          </button>
+          <button onClick={handleExportExcel} className="export-button">
+            📊 Excel
+          </button>
+        </div>
+      </div>
+      <Link to="/papers" className="source-link">Sources →</Link>
+    </div>
+
+    </div>
   )
 }
 

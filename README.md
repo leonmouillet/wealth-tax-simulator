@@ -9,26 +9,29 @@ An interactive web simulator showing how a minimum wealth tax would affect tax p
 | File | Purpose |
 |------|---------|
 | `src/data/*.json` | Input data for each country |
-| `src/utils/calculations.js` | All simulation formulas|
+| `src/data/papers.js` | Academic papers database with country mapping |
+| `src/utils/calculations.js` | All simulation formulas |
+| `src/utils/exportUtils.js` | PNG and Excel export functionality with citations |
 | `src/components/Chart.jsx` | Interactive chart component with X-axis scaling modes |
 | `src/components/SimulatorSection.jsx` | Simulator interface with tax parameters |
 | `src/components/ComparisonSection.jsx` | Cross-country comparison chart |
 | `src/pages/Home.jsx` | Assembles the main page sections |
 | `src/index.css` | All CSS styles in one place |
 | `public/wealth-tax-simulator.xlsx` | Downloadable Excel version of the simulator |
+| `generate_json.py` | Python script to generate JSON files from Excel |
 
 ## Adding a New Country
 
-1. Create the data file `src/data/[country].json`, following the exact same format as the other countries.
-
-2. Import the data file in `src/pages/Home.jsx`:
+1. **Create the data file** `src/data/[country].json`, following the exact same format as the other countries.
+   
+2. **Import the data file** in `src/pages/Home.jsx`:
 ```jsx
-import countryData from '../data/[country].json'
-
-const ALL_COUNTRIES = [franceData, usData, ..., countryData]
+   import countryData from '../data/[country].json'
+   
+   const ALL_COUNTRIES = [franceData, usData, ..., countryData]
 ```
 
-3. Add the corresponding reference to Papers page in `src/pages/Papers.jsx`.
+3. **Add the academic reference(s)** in `src/data/papers.js`, following the exact same format as the other papers. The paper will automatically appear on the Papers page and in export citations.
 
 ## Modifying the Simulation
 
