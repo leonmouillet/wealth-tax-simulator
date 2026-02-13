@@ -2,19 +2,19 @@
 export const PAPERS_DATA = [
   {
     country: "France",
-    authors: "Bozio, Garbinti, Goupille-Lebret, Guillot, Piketty",
-    year: 2020,
-    shortRef: "Bozio et al. (2020)",
-    title: "Predistribution vs. Redistribution: Evidence from France and the U.S.",
-    url: "https://wid.world/www-site/uploads/2020/11/WorldInequalityLab_WP2020_22_PredistributionvsRedistribution.pdf"
-  },
-  {
-    country: "France",
     authors: "Bach, Bozio, Guillouzouic, Malgouyres",
     year: 2025,
     shortRef: "Bach et al. (2025)",
     title: "Do Billionaires Pay Taxes?",
     url: "https://www.ipp.eu/wp-content/uploads/2025/09/BBGM_2025.pdf"
+  },
+  {
+    country: "France",
+    authors: "Insee",
+    year: 2024,
+    shortRef: "Insee (2024)",
+    title: "Comptes nationaux distribués 2022, base 2020. CND.101 - Comptes nationaux distribués selon les vingtièmes de niveau de vie usuel",
+    url: "https://www.insee.fr/fr/statistiques/8194104"
   },
   {
     country: "United States",

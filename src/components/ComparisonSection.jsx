@@ -190,7 +190,7 @@ const handleExportExcel = () => {
             <Legend 
               verticalAlign="top" 
               align="right"
-              wrapperStyle={{ paddingBottom: '10px' }}
+              wrapperStyle={{ paddingBottom: '20px' }}
             />            
             {/* Country lines */}
             {countries.map((country) => (

@@ -293,7 +293,7 @@ function Chart({
         <Legend 
           verticalAlign="top" 
           align="right"
-          wrapperStyle={{ paddingBottom: '10px' }}
+          wrapperStyle={{ paddingBottom: '20px' }}
         />
                   
           {/* Data lines */}
