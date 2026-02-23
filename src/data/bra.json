@@ -145,7 +145,7 @@
       "incomeThreshold": 352926.3027295285,
       "totalRate": 0.22436049,
       "indivRate": 0.04854842000000001,
-      "incomeWealthRatio": 0.12,
+      "incomeWealthRatio": 0.108,
       "nominalGrowthAvg": 0.07198985122347334,
       "nominalGrowthThreshold": 0.1006430821501958,
       "populationGrowth": 0.010179448705106342
@@ -158,7 +158,7 @@
       "incomeThreshold": 1737934.2431761785,
       "totalRate": 0.21458076,
       "indivRate": 0.033692159999999985,
-      "incomeWealthRatio": 0.09,
+      "incomeWealthRatio": 0.083,
       "nominalGrowthAvg": 0.054629983402930016,
       "nominalGrowthThreshold": 0.06151704726241136,
       "populationGrowth": 0.010179448705106342
@@ -171,7 +171,7 @@
       "incomeThreshold": 9018191.563275434,
       "totalRate": 0.19708729,
       "indivRate": 0.02046060000000001,
-      "incomeWealthRatio": 0.09,
+      "incomeWealthRatio": 0.074,
       "nominalGrowthAvg": 0.05541356564892497,
       "nominalGrowthThreshold": 0.05508327835901827,
       "populationGrowth": 0.010179448705106342
